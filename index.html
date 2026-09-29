@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>麦克风录音</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>麦克风录音</h1>
+
+    <!-- 全局提示条：权限 / 异常 / 降级提示 -->
+    <div id="banner" class="banner hidden" role="alert"></div>
+
+    <!-- 非安全上下文或不支持时的降级面板 -->
+    <section id="fallback-panel" class="card hidden">
+      <h2>无法使用麦克风录音</h2>
+      <p id="fallback-reason"></p>
+      <p>你仍然可以上传已有的音频文件：</p>
+      <input type="file" id="upload-input" accept="audio/*">
+    </section>
+
+    <section id="recorder-panel">
+      <!-- 状态区 -->
+      <div class="card status-card">
+        <div class="status-row">
+          <span class="label">权限状态</span>
+          <span id="permission-status" class="badge">未知</span>
+        </div>
+        <div class="status-row">
+          <span class="label">录音状态</span>
+          <span id="record-state" class="badge">空闲</span>
+        </div>
+        <div class="status-row">
+          <span class="label">录音时长</span>
+          <span id="duration" class="duration">00:00.0</span>
+        </div>
+      </div>
+
+      <!-- 设置区 -->
+      <div class="card">
+        <div class="field">
+          <label for="device-select">输入设备</label>
+          <div class="inline">
+            <select id="device-select"></select>
+            <button id="refresh-devices" type="button" title="刷新设备列表">刷新</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="sample-rate-select">采样率</label>
+          <select id="sample-rate-select">
+            <option value="">默认</option>
+            <option value="8000">8000 Hz</option>
+            <option value="16000">16000 Hz</option>
+            <option value="22050">22050 Hz</option>
+            <option value="44100" selected>44100 Hz</option>
+            <option value="48000">48000 Hz</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="codec-select">编码格式</label>
+          <select id="codec-select"></select>
+          <p id="codec-note" class="hint hidden"></p>
+        </div>
+      </div>
+
+      <!-- 控制区 -->
+      <div class="card controls">
+        <button id="btn-request" type="button">申请麦克风权限</button>
+        <button id="btn-start" type="button" disabled>开始录音</button>
+        <button id="btn-pause" type="button" disabled>暂停</button>
+        <button id="btn-resume" type="button" disabled>继续</button>
+        <button id="btn-stop" type="button" disabled>停止</button>
+      </div>
+
+      <!-- 预览与导出 -->
+      <div class="card hidden" id="preview-card">
+        <h2>本次录音</h2>
+        <audio id="preview-audio" controls></audio>
+        <p class="hint" id="preview-meta"></p>
+        <div class="inline">
+          <button id="btn-export" type="button">导出音频文件</button>
+          <button id="btn-retry-export" type="button" class="hidden">导出失败，点击重试</button>
+          <button id="btn-discard" type="button">丢弃</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 历史记录（IndexedDB） -->
+    <section class="card">
+      <h2>历史录音</h2>
+      <ul id="history-list" class="history"></ul>
+      <p id="history-empty" class="hint">暂无历史录音</p>
+    </section>
+  </main>
+
+  <script src="js/db.js"></script>
+  <script src="js/recorder.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
