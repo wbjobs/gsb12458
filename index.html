@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>网页录音机</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>网页录音机</h1>
+
+    <!-- 环境 / 权限状态横幅 -->
+    <section id="banner" class="banner hidden" role="alert"></section>
+
+    <!-- 权限状态面板 -->
+    <section class="panel">
+      <h2>权限状态</h2>
+      <div class="status-row">
+        <span id="permBadge" class="badge badge-unknown">检测中…</span>
+        <button id="btnRequestPerm" type="button">申请麦克风权限</button>
+      </div>
+      <p id="permHint" class="hint"></p>
+    </section>
+
+    <!-- 录音设置 -->
+    <section class="panel" id="settingsPanel">
+      <h2>录音设置</h2>
+      <div class="field">
+        <label for="selDevice">输入设备</label>
+        <select id="selDevice"></select>
+        <button id="btnRefreshDevices" type="button" title="刷新设备列表">刷新</button>
+      </div>
+      <div class="field">
+        <label for="selSampleRate">采样率</label>
+        <select id="selSampleRate">
+          <option value="">默认</option>
+          <option value="8000">8000 Hz</option>
+          <option value="16000">16000 Hz</option>
+          <option value="22050">22050 Hz</option>
+          <option value="44100" selected>44100 Hz</option>
+          <option value="48000">48000 Hz</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="selMime">编码格式</label>
+        <select id="selMime"></select>
+        <span id="mimeNote" class="hint"></span>
+      </div>
+    </section>
+
+    <!-- 录音控制 -->
+    <section class="panel" id="recordPanel">
+      <h2>录音</h2>
+      <div class="record-row">
+        <span id="recState" class="badge badge-idle">空闲</span>
+        <span id="recTimer" class="timer">00:00.0</span>
+      </div>
+      <div class="record-row buttons">
+        <button id="btnStart" type="button">开始录音</button>
+        <button id="btnPause" type="button" disabled>暂停</button>
+        <button id="btnResume" type="button" disabled>继续</button>
+        <button id="btnStop" type="button" disabled>停止</button>
+      </div>
+      <p id="recHint" class="hint"></p>
+    </section>
+
+    <!-- 预览与导出 -->
+    <section class="panel hidden" id="previewPanel">
+      <h2>预览与导出</h2>
+      <audio id="previewAudio" controls></audio>
+      <div class="record-row">
+        <span id="previewInfo" class="hint"></span>
+        <button id="btnExport" type="button">导出音频文件</button>
+        <button id="btnDiscard" type="button">丢弃</button>
+      </div>
+      <p id="exportHint" class="hint"></p>
+    </section>
+
+    <!-- 降级：文件上传 -->
+    <section class="panel hidden" id="fallbackPanel">
+      <h2>无法直接录音</h2>
+      <p id="fallbackReason" class="hint"></p>
+      <p>你可以改用文件上传的方式导入音频：</p>
+      <input type="file" id="fileUpload" accept="audio/*" />
+      <audio id="uploadAudio" controls class="hidden"></audio>
+    </section>
+
+    <!-- 历史记录 -->
+    <section class="panel">
+      <h2>历史记录</h2>
+      <ul id="historyList" class="history"></ul>
+      <p id="historyEmpty" class="hint">暂无历史录音</p>
+    </section>
+  </main>
+
+  <script src="js/db.js"></script>
+  <script src="js/recorder.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
